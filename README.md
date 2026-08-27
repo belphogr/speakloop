@@ -8,7 +8,7 @@ SpeakLoop is a local-first listening and speaking lab for Chinese learners of En
 
 It is designed for a familiar gap: many learners can answer listening-test questions, yet still miss natural speech in videos and struggle to react quickly in real conversations. SpeakLoop is not only about pronunciation; it is for building stronger listening comprehension, quicker response, and a more natural feel for spoken English.
 
-![SpeakLoop overview](docs/assets/speakloop-overview.svg)
+![SpeakLoop overview](docs/assets/speakloop-overview.png)
 
 ## Why SpeakLoop
 

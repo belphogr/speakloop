@@ -8,7 +8,7 @@ SpeakLoop 是一款面向中国英语学习者的本地优先听力与口语学�
 
 它解决的不只是“发音不够好”。很多输入型学习者能做对听力题，却无法在自然视频里迅速切分语音、抓住意思；即便听懂了，也很难在真实交流中快速反应。SpeakLoop 的目标是同时提升听力理解、反应速度，以及对自然英语节奏的直觉。
 
-![SpeakLoop 总览](docs/assets/speakloop-overview.svg)
+![SpeakLoop 总览](docs/assets/speakloop-overview.png)
 
 ## 为什么做 SpeakLoop
 
