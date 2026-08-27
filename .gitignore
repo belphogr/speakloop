@@ -1,0 +1,15 @@
+node_modules/
+release/
+artifacts/
+*.log
+.env
+.env.*
+
+video-library/*
+!video-library/.gitkeep
+user-data/*
+!user-data/.gitkeep
+
+tools/ffmpeg/
+vendor/ffmpeg/
+vendor/electron-dist/
