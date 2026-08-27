@@ -5,11 +5,14 @@ artifacts/
 .env
 .env.*
 
+# Personal learning content — never publish it.
 video-library/*
 !video-library/.gitkeep
 user-data/*
 !user-data/.gitkeep
 
+# Local FFmpeg distribution; document installation instead of committing a 300 MB binary.
 tools/ffmpeg/
 vendor/ffmpeg/
 vendor/electron-dist/
+

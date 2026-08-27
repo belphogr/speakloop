@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://api.openai.com https://open.bigmodel.cn https://api.deepseek.com https://*.stt.speech.microsoft.com; img-src 'self' blob: data:; media-src 'self' blob:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'" />
+    <title>SpeakLoop · 自主听力与口语学习</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="history.css" />
+    <link rel="stylesheet" href="player-controls.css" />
+    <link rel="stylesheet" href="app-shell.css" />
+  </head>
+  <body>
+    <div id="startupScreen" class="startup-screen" role="status" aria-label="SpeakLoop 正在启动">
+      <div class="startup-orbit" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      <div class="startup-brand">SpeakLoop</div>
+      <div class="startup-progress"><span></span></div>
+    </div>
+    <main>
+      <header>
+        <div><h1>SpeakLoop</h1></div>
+        <nav class="page-tabs" aria-label="主导航"><button class="active" data-page="practice">练习台</button><button data-page="library">资源与记录</button><button data-page="bookmarks">收藏夹</button></nav>
+        <div class="header-actions"><span id="modePill" class="pill">离线基础模式</span><button class="settings-trigger" id="settingsButton" aria-label="设置" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm0-6 1.05 2.23 2.4.34.66 2.34 2.19 1.03-.43 2.38L20 12l-1.13 2.13.43 2.38-2.19 1.03-.66 2.34-2.4.34L12 22.5l-2.05-2.23-2.4-.34-.66-2.34-2.19-1.03.43-2.38L4 12l1.13-2.13-.43-2.38 2.19-1.03.66-2.34 2.4-.34L12 2.5Z"/></svg></button></div>
+      </header>
+      <div id="appearanceMenu" class="appearance-menu" hidden>
+        <p>外观</p>
+        <button data-theme-choice="light"><span>☀</span>浅色 <i></i></button>
+        <button data-theme-choice="dark"><span>☾</span>深色 <i></i></button>
+        <button data-theme-choice="system"><span>▣</span>跟随系统 <i></i></button>
+        <hr />
+        <button id="apiSettingsButton"><span>⌘</span>API 设置 <b>›</b></button>
+      </div>
+      <section id="libraryPage" class="library-page" hidden>
+      <section class="personal-picks" aria-labelledby="personalPicksTitle">
+        <div class="weekly-picks-head"><div><p class="eyebrow">MY CURATION</p><h2 id="personalPicksTitle">我的定制推荐</h2><p id="personalPicksMeta" class="hint">在 Codex 设置自己的定时推荐任务后，清单会显示在这里。</p></div><button id="recommendationSettingsButton" class="ghost">推荐设置</button></div>
+        <div id="personalPicksList" class="personal-picks-list"><p class="hint">还没有个人推荐。点击“推荐设置”生成 Codex 定时任务提示词。</p></div>
+      </section>
+      <section class="library-history" aria-labelledby="libraryHistoryTitle"><div><h2 id="libraryHistoryTitle">资源记录</h2><p class="hint">已导入的视频与字幕会自动保存在本机；点击记录可继续学习。</p></div><div id="libraryHistoryList" class="library-history-list"></div></section>
+      </section>
+      <section id="bookmarksPage" class="bookmarks-page" hidden>
+        <div class="bookmarks-head"><div><p class="eyebrow">SAVED SENTENCES</p><h2>收藏夹</h2><p id="bookmarksMeta" class="hint">把值得反复模仿的句子收集在这里。</p></div></div>
+        <div id="bookmarksList" class="bookmarks-list"><p class="hint">还没有收藏句子。练习时点击右上角的 ☆，它就会出现在这里。</p></div>
+      </section>
+      <section id="practicePage" class="workspace">
+        <div class="player-column">
+          <div id="dropZone" class="video-shell">
+            <video id="video" controls playsinline></video>
+            <div id="emptyVideo" class="empty-video"><span class="play-mark">▶</span><h2>导入一段无字幕视频</h2><p>MP4、WebM、MOV 均可。文件只在这台电脑上播放。</p><label class="primary">选择视频<input id="videoInput" type="file" accept="video/*" hidden /></label></div>
+          </div>
+          <div class="timeline-row"><input id="seekBar" type="range" min="0" max="0" value="0" step="0.01" aria-label="视频进度" /><span id="timelineLabel">00:00 / 00:00</span></div>
+          <div class="ab-loop-row"><span>A–B 片段循环</span><button id="setAButton" class="ghost compact">设 A 点</button><button id="setBButton" class="ghost compact" disabled>设 B 点</button><button id="clearABButton" class="ghost compact" disabled>清除</button><em id="abLoopStatus">选择 2–8 秒片段</em></div>
+          <div class="controls">
+            <button id="previousButton" title="上一句">‹</button><button id="playSentenceButton" class="primary compact">播放本句</button><button id="loopButton" class="toggle">循环本句</button><button id="nextButton" title="下一句">›</button>
+            <label>速度 <select id="speedSelect"><option value="0.75">0.75×</option><option value="1" selected>1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option></select></label>
+          </div>
+          <div class="subtitle-head"><div><p class="eyebrow">BILINGUAL TRANSCRIPT</p><h2>双语字幕</h2><p class="hint subtitle-autosave">修改字幕后会自动保存到当前视频。</p></div><div><button id="dictationModeButton" class="toggle">听写模式</button><button id="revealModeButton" class="toggle">逐层揭晓</button><button id="generateButton" class="ghost">AI 自动转写</button><button id="translateButton" class="ghost">翻译中文</button><button id="subtitleToggle" class="toggle active">显示字幕</button></div></div>
+          <div id="subtitleList" class="subtitle-list"></div>
+        </div>
+        <aside class="practice-panel">
+          <div class="panel-top"><p class="eyebrow">SENTENCE PRACTICE</p><button id="bookmarkButton" class="icon-button" title="收藏本句">☆</button></div>
+          <span id="sentenceTime" class="time">00:00 – 00:00</span>
+          <h2 id="targetEnglish">先导入视频，再自动生成字幕。</h2>
+          <p id="targetChinese" class="translation">你可以先在 API 设置中接入自己的 Key。</p>
+          <section id="dictationPanel" class="dictation-panel" hidden><p class="eyebrow">BLIND LISTENING</p><h3>听写这一句</h3><p class="hint">先点击“播放本句”反复听，再输入你听到的英文。答案会在揭晓后显示。</p><textarea id="dictationInput" rows="4" placeholder="Type what you hear…" spellcheck="false"></textarea><div class="dictation-actions"><button id="replayDictationButton" class="ghost">再听一次</button><button id="revealDictationButton" class="primary compact">揭晓对照</button></div><div id="dictationResult" class="dictation-result" aria-live="polite"></div></section>
+          <section id="revealPanel" class="dictation-panel" hidden><p class="eyebrow">GUIDED LISTENING</p><h3>逐层揭晓这一句</h3><p id="revealHint" class="hint">先只听，不看任何文字提示。</p><div id="revealContent" class="reveal-content">准备好后，点击下方按钮获取第一层提示。</div><div class="dictation-actions"><button id="replayRevealButton" class="ghost">再听一次</button><button id="nextRevealButton" class="primary compact">揭晓首词</button></div></section>
+          <div class="recording-card"><div class="recording-status"><span id="recordDot"></span><span id="recordStatus">准备跟读</span><span id="recordTimer">00:00</span></div><button id="recordButton" class="record-button">●</button><p>点击录音，读完后再次点击停止</p></div>
+          <audio id="recordingPlayback" controls hidden></audio>
+          <section id="comparisonPanel" class="comparison-panel" hidden aria-live="polite"><p class="eyebrow">A/B LISTENING</p><h3>原声与我的录音</h3><p id="comparisonStatus" class="hint">先听原声，再自动播放你的录音。</p><div class="comparison-actions"><button id="abCompareButton" class="primary compact">原声 → 我的录音</button><button id="listenOwnButton" class="ghost compact">只听我的录音</button></div></section>
+          <div id="feedback" class="feedback empty"><p>你可以随时录音并回听自己的声音。若要获得语速、文本匹配、可执行建议、语调、单词发音和目标口音契合度，请在设置中配置 Azure Speech。</p></div>
+          <p class="privacy">已导入的视频、字幕与个人收藏仅保存在本机。启用 API 后，只有你主动操作的文件或录音会发送至对应服务。</p>
+        </aside>
+      </section>
+    </main>
+    <dialog id="settingsDialog"><form method="dialog"><div class="dialog-head"><div><h2>API 设置</h2></div><button class="icon-button" value="cancel">×</button></div><p>Key 只保留在当前浏览器会话，并由本机服务转发；关闭页面后即清除。</p><label>字幕与翻译服务商<select id="providerSelect"><option value="openai">OpenAI</option><option value="zhipu">智谱 AI</option><option value="deepseek">DeepSeek</option></select></label><label id="apiKeyLabel">OpenAI API Key<input id="apiKeyInput" type="password" placeholder="sk-..." autocomplete="off" /></label><p id="providerHint" class="hint">用于自动英文转写和中文翻译，不用于录音评分。</p><hr class="settings-divider" /><h3>高精度发音评测（可选）</h3><p class="hint">使用 Azure Speech 的单词级评测。录音会发送至 Microsoft；英式模式评估 en-GB，美式模式额外提供语调评分。</p><label>Azure Speech Key<input id="azureSpeechKeyInput" type="password" placeholder="Azure Speech Key" autocomplete="off" /></label><label>Azure 区域<input id="azureSpeechRegionInput" type="text" placeholder="例如 eastasia" autocomplete="off" /></label><label>练习目标口音<select id="pronunciationLocaleSelect"><option value="en-GB">英式英语（en-GB）</option><option value="en-US">美式英语（en-US，含语调）</option></select></label><div class="dialog-actions"><button value="cancel" class="ghost">取消</button><button id="saveKeyButton" value="default" class="primary">保存并启用</button></div></form></dialog>
+    <dialog id="recommendationDialog"><form method="dialog"><div class="dialog-head"><div><h2>我的推荐设置</h2></div><button class="icon-button" value="cancel">×</button></div><p>应用无法代替你创建 Codex 定时任务；请复制下方提示词，在 Codex 中按自己的节奏创建任务。任务会将结果写入本机，应用会自动读取。</p><label>目标口音<select id="recommendationAccent"><option>英国英语 / 接近标准英音</option><option>美式英语 / 通用美音</option><option>混合英语口音</option></select></label><label>练习主题<input id="recommendationTopics" type="text" value="IELTS 常见口语话题、表达与发音" /></label><label>单条时长<select id="recommendationDuration"><option value="5–20 分钟">5–20 分钟</option><option value="3–10 分钟">3–10 分钟</option><option value="10–30 分钟">10–30 分钟</option></select></label><label>每次推荐数量<select id="recommendationCount"><option value="5">5 条</option><option value="7">7 条</option><option value="10">10 条</option></select></label><label class="check-option"><input id="recommendationAutoImport" type="checkbox" /> 自动导入已核验的直链视频</label><p class="hint">开启后，Codex 任务更新推荐清单，应用下次打开资源页会自动下载其中未导入的视频；不会自动转写或消耗 AI API。</p><label>Codex 任务提示词<textarea id="recommendationPrompt" rows="9" readonly></textarea></label><div class="dialog-actions"><button id="copyRecommendationPrompt" type="button" class="ghost">复制提示词</button><button value="cancel" class="primary">完成</button></div></form></dialog>
+    <template id="subtitleTemplate"><article class="subtitle-item"><button class="subtitle-time"></button><div><textarea class="english" rows="1"></textarea><textarea class="chinese" rows="1" placeholder="中文翻译（可编辑）"></textarea></div></article></template>
+    <script src="app.js"></script>
+  </body>
+</html>
+

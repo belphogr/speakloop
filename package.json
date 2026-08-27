@@ -1,0 +1,62 @@
+{
+  "name": "speakloop",
+  "version": "0.1.0",
+  "description": "A self-directed English listening and speaking practice desktop app for Chinese learners.",
+  "author": "SpeakLoop contributors",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "main": "desktop/main.mjs",
+  "scripts": {
+    "start": "node server.mjs",
+    "desktop": "electron .",
+    "check": "node --check server.mjs && node --check desktop/main.mjs",
+    "dist:win": "electron-builder --win nsis --x64"
+  },
+  "devDependencies": {
+    "electron": "^44.0.0",
+    "electron-builder": "^26.15.3",
+    "png-to-ico": "^3.0.2",
+    "sharp": "^0.35.4"
+  },
+  "build": {
+    "appId": "com.speakloop.app",
+    "productName": "SpeakLoop",
+    "icon": "build/icon.ico",
+    "asar": true,
+    "directories": {
+      "output": "artifacts"
+    },
+    "files": [
+      "public/**/*",
+      "desktop/**/*",
+      "server.mjs",
+      "package.json",
+      "LICENSE",
+      "docs/THIRD_PARTY_NOTICES.md"
+    ],
+    "extraResources": [
+      {
+        "from": "vendor/ffmpeg",
+        "to": "ffmpeg",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "artifactName": "SpeakLoop-Setup-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  }
+}
+
