@@ -8,7 +8,7 @@ SpeakLoop is a local-first listening and speaking lab for Chinese learners of En
 
 It is designed for a familiar gap: many learners can answer listening-test questions, yet still miss natural speech in videos and struggle to react quickly in real conversations. SpeakLoop is not only about pronunciation; it is for building stronger listening comprehension, quicker response, and a more natural feel for spoken English.
 
-![Practice workspace](docs/assets/practice-workspace.svg)
+![SpeakLoop overview](docs/assets/speakloop-overview.svg)
 
 ## Why SpeakLoop
 
@@ -21,25 +21,14 @@ Traditional test practice often rewards finding an answer, not understanding a w
 | You know an expression but cannot produce it quickly | Shadow the original, loop the sentence, then compare your recording. |
 | You cannot sustain fixed materials | Build a private library from videos you chose yourself. |
 
-## Product preview
+## A closer look
 
-### Practise one sentence at a time
+| Listen before you read | Practice one sentence | Keep a personal input library |
+| --- | --- | --- |
+| **Dictation** and progressive reveal keep the transcript hidden until you are ready. | Replay, loop, A–B clips and recording turn a line into a small, repeatable drill. | Import your own videos or build recommendations around your preferred accent, topic and duration. |
+| ![Blind listening modes](docs/assets/listening-modes.svg) | ![Sentence practice workspace](docs/assets/practice-workspace.svg) | ![Personal library](docs/assets/personal-library.svg) |
 
-Import a video, generate an English transcript, translate when needed, then use a draggable timeline, speed control, sentence replay, sentence loop, and A–B clips.
-
-![Sentence practice workspace](docs/assets/practice-workspace.svg)
-
-### Listen before you read
-
-Dictation mode asks you to write what you heard. Progressive reveal unlocks the first word, key words, full sentence, and Chinese meaning step by step.
-
-![Blind listening modes](docs/assets/listening-modes.svg)
-
-### Build your own input library
-
-Create a Codex recommendation task with your accent, topic, and length preferences. Recommendations and imported videos remain local to your machine.
-
-![Personal library](docs/assets/personal-library.svg)
+The overview above is the complete loop: import a video, listen with intent, reveal only the help you need, then repeat and compare your recording. Your library stays on your own computer.
 
 ## Features
 
