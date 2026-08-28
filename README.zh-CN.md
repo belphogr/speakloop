@@ -56,7 +56,7 @@ SpeakLoop 是一款面向中国英语学习者的本地优先听力与口语学�
 
 SpeakLoop 已完成 Windows 桌面版打包。安装包会内置本地运行环境与 LGPL 兼容的 FFmpeg，因此普通学习者不需要安装 Node.js，也不需要单独配置 FFmpeg。
 
-首个公开安装包将附在本仓库的 **GitHub Releases** 页面。目前尚未发布到该页面，请不要从其他来源下载同名安装程序。
+请仅从本仓库的 **[GitHub Releases](https://github.com/belphogr/speakloop/releases)** 页面下载官方 Windows 安装包；不要从其他来源下载同名安装程序。
 
 ### Windows 桌面版
 
