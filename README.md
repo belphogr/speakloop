@@ -56,7 +56,7 @@ The overview above is the complete loop: import a video, listen with intent, rev
 
 SpeakLoop is packaged as a Windows desktop application. The installer bundles the local runtime and an LGPL-compatible FFmpeg build, so ordinary learners do not need Node.js or a separate FFmpeg installation.
 
-The first public installer will be attached to this repository's **GitHub Releases** page. It is not published there yet, so do not download a similarly named installer from another source.
+Download the official Windows installer only from this repository's **[GitHub Releases](https://github.com/belphogr/speakloop/releases)** page. Do not download a similarly named installer from another source.
 
 ### Windows desktop app
 
